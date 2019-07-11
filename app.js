@@ -4,19 +4,31 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+
+
+
+
 const productRoutes = require('./API/routes/products');
 const orderRouters = require('./API/routes/orders');
+const server = require('./server');
 
-//connecting to mongoose
-mongoose.connect(
-"mongodb+srv://node-rest-shop:" +
+
+//connecting to database
+mongoose.connect('mongodb+srv://node-rest-shop:' +
     process.env.MONGO_ATLAS_PW +
-    "@node-rest-shop-8fkpg.mongodb.net/test?retryWrites=true&w=majority",
-    {useNewUrlParser: true},
+    '@node-rest-shop-8fkpg.mongodb.net/test?retryWrites=true&w=majority',
     {
-   useMongoClient: true
+    auth: {
+        user:'node-rest-shop',
+        password:'4G42UOh1vYX8gAen' },
+
+        useNewUrlParser:true
+}, function(err, client) {
+    if (err) {
+        console.log(err);
     }
-);
+    console.log('connect!!!');
+});
 
 
 app.use(morgan('dev'));
@@ -36,7 +48,6 @@ app.use(function(req, res, next) {
     }
     next();
 });
-
 
 //Routes that handle requests
 app.use('/products',productRoutes);

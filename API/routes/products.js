@@ -11,7 +11,7 @@ router.get('/',function(req,res,next) {
     });
 });
 
-router.post('/', function (req,res,next) {
+router.post("/", function (req,res,next) {
 //Schema item from product
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
@@ -21,8 +21,8 @@ router.post('/', function (req,res,next) {
     product
         .save()
         .then(result => {
-        console.log(result);
-    })
+            console.log(result);
+        })
         .catch(err => console.log(err));
 
     res.status(201).json({
@@ -31,19 +31,36 @@ router.post('/', function (req,res,next) {
     });
 });
 
-router.get('/:productId', function (req,res,next){
+router.get("/:productId", function (req,res,next) {
     const id = req.params.productId;
-    Product.findById(id)
+    Product.findById(id, function (error, doc) {
+        if (error) {
+            console.log('Error' + error.message);
+            return res.status(500).json({
+                error: error
+            });
+        }
+        console.log(doc);
+        res.status(200).json({
+            doc
+        });
+    });
+});
+
+       /*
         .exec()
         .then(doc => {
-        console.log("From Database",doc);
-        return  res.status(200).json( doc);
+            console.log("From Database",doc);
+            res.status(200).json(doc);
+            res.end("ok");
         })
         .catch(err => {
             console.log(err);
             res.status(500).json({error:err});
         })
-});
+
+
+        */
 
 router.patch('/:productId', function (req,res,next){
     res.status(200).json({
@@ -53,8 +70,8 @@ router.patch('/:productId', function (req,res,next){
 
 router.delete('/:productId', function (req,res,next){
     res.status(200).json({
-       message: 'Delete product!'
-        });
+        message: 'Delete product!'
     });
+});
 
 module.exports = router;
