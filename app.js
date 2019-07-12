@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 const productRoutes = require('./API/routes/products');
 const orderRouters = require('./API/routes/orders');
-const server = require('./server');
+
 
 
 //connecting to database
@@ -23,11 +23,11 @@ mongoose.connect('mongodb+srv://node-rest-shop:' +
         password:'4G42UOh1vYX8gAen' },
 
         useNewUrlParser:true
-}, function(err, client) {
+}, function(err) {
     if (err) {
         console.log(err);
     }
-    console.log('connect!!!');
+    console.log('Test on Postman');
 });
 
 
