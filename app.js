@@ -4,14 +4,10 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
-
-
-
 const productRoutes = require('./API/routes/products');
 const orderRouters = require('./API/routes/orders');
 
-
+mongoose.Promise = global.Promise;
 
 //connecting to database
 mongoose.connect('mongodb+srv://node-rest-shop:' +
@@ -21,14 +17,16 @@ mongoose.connect('mongodb+srv://node-rest-shop:' +
     auth: {
         user:'node-rest-shop',
         password:'4G42UOh1vYX8gAen' },
-
         useNewUrlParser:true
+
 }, function(err) {
     if (err) {
         console.log(err);
     }
     console.log('Test on Postman');
 });
+
+
 
 
 app.use(morgan('dev'));
