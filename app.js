@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const productRoutes = require('./API/routes/products');
 const orderRouters = require('./API/routes/orders');
 
+
 mongoose.Promise = global.Promise;
 
 //connecting to database
@@ -28,8 +29,10 @@ mongoose.connect('mongodb+srv://node-rest-shop:' +
 
 
 
-
 app.use(morgan('dev'));
+
+//making a folder statically available
+app.use('/uploads',express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -59,7 +62,7 @@ app.use( function(req,res,next){
 });
 
 //Other Errors
-app.use( function(error, req,res,next){
+app.use( function(error, req,res){
    res.status(error.status|| 500);
    res.json({
        error: {
