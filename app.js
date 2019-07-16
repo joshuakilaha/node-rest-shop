@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const productRoutes = require('./API/routes/products');
 const orderRouters = require('./API/routes/orders');
-
+const userRouters = require('./API/routes/users');
 
 mongoose.Promise = global.Promise;
 
@@ -18,6 +18,7 @@ mongoose.connect('mongodb+srv://node-rest-shop:' +
     auth: {
         user:'node-rest-shop',
         password:'4G42UOh1vYX8gAen' },
+        useCreateIndex: true,
         useNewUrlParser:true
 
 }, function(err) {
@@ -26,7 +27,6 @@ mongoose.connect('mongodb+srv://node-rest-shop:' +
     }
     console.log('Test on Postman');
 });
-
 
 
 app.use(morgan('dev'));
@@ -53,6 +53,7 @@ app.use(function(req, res, next) {
 //Routes that handle requests
 app.use('/products',productRoutes);
 app.use('/orders', orderRouters);
+app.use('/users',userRouters);
 
 //Error Handling
 app.use( function(req,res,next){
