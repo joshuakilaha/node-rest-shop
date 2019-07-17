@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const checkAuth = require('../Auth/check-auth');
 
 const storage = multer.diskStorage({
    destination: function (req, file,cb) {
@@ -34,7 +35,7 @@ const upload = multer({
 const Product = require('../models/product');
 
 
-router.get('/',function(req,res,next) {
+router.get('/',checkAuth,function(req,res,next) {
     Product.find()
         .select('name price _id productImage')
         .exec()
@@ -70,7 +71,7 @@ router.get('/',function(req,res,next) {
         })
 });
 
-router.post("/",upload.single('productImage'),function (req,res,next) {
+router.post("/", checkAuth ,upload.single('productImage'),function (req,res,next) {
 //Schema item from product
     console.log(req.file);
     const product = new Product({
@@ -104,7 +105,7 @@ router.post("/",upload.single('productImage'),function (req,res,next) {
     });
 });
 
-router.get("/:productId", function (req,res,next) {
+router.get("/:productId", checkAuth,function (req,res,next) {
     const id = req.params.productId;
    Product.findById(id);
        select('name price _id productImage')
@@ -134,7 +135,7 @@ router.get("/:productId", function (req,res,next) {
        });
 });
 
-router.patch('/:productId', function (req,res,next) {
+router.patch('/:productId',checkAuth ,function (req,res,next) {
     const id = req.params.productId;
     const updateOperations = {};
     for (const operations of req.body){
@@ -159,7 +160,7 @@ router.patch('/:productId', function (req,res,next) {
        });
 });
 
-router.delete('/:productId', function (req,res,next) {
+router.delete('/:productId', checkAuth,function (req,res,next) {
     const id = req.params.productId;
   Product.deleteOne({_id: id})
       .exec()
